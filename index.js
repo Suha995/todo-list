@@ -48,7 +48,7 @@ function createListItem(node, text, finished){
 
     node.appendChild(item);
     
-    addEventHandlersToListItems(checkbox);
+    addEventHandlersToListItems(checkbox, text);
 }
 
 
@@ -68,20 +68,10 @@ document.getElementById('submit').addEventListener('click', () => {
     }
 })
 
-// document.querySelectorAll('.list-item-check').forEach( item => item.addEventListener('click', () => {
-//     const checkedElementValue = item.parentNode.previousElementSibling.firstElementChild.value;
-//     console.log(checkedElementValue);
-//     const found = list.find( ele => ele.text === checkedElementValue);
-//     console.log(found);
-//     found.finished = !found.finished;
-//     console.log(found.finished);
-// }));
 
-// console.log(document.querySelectorAll('.list-item-check'));
-
-function addEventHandlersToListItems(item){
+function addEventHandlersToListItems(item, checkedElementValue){
     item.addEventListener('click', () => {
-        const checkedElementValue = item.parentNode.previousElementSibling.firstElementChild.value;
+        //const checkedElementValue = item.parentNode.previousElementSibling.firstElementChild.value;
         console.log(checkedElementValue);
         const found = list.find( ele => ele.text === checkedElementValue);
         // console.log(found);
