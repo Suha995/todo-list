@@ -7,7 +7,7 @@ const list = [
     },
     {
         text: "help my friend with her exam",
-        finished: true  
+        finished: false  
     }
 ]
 
@@ -23,23 +23,32 @@ for(const task of list){
 function createListItem(node, text, finished){
     const item = document.createElement('div');
     item.classList.add("list-item");
+
     const left = document.createElement('div');
     left.classList.add("left");
+
     const right = document.createElement('div');
     right.classList.add("right");
+
     const input = document.createElement('input');
     input.type = 'text';
+
     input.classList.add('list-item-content');
     input.value = text;
+
     const checkbox = document.createElement('input');
     checkbox.type = 'checkbox';
     checkbox.checked = finished;
     checkbox.classList.add('list-item-check');
+
     item.appendChild(left);
     item.appendChild(right);
     left.appendChild(input);
     right.appendChild(checkbox);
+
     node.appendChild(item);
+    
+    addEventHandlersToListItems(checkbox);
 }
 
 
@@ -50,12 +59,33 @@ document.getElementById('submit').addEventListener('click', () => {
         window.alert('the text input is empty');
     }
     else{
-        const newItem = document.getElementById('submit').parentNode.previousElementSibling.firstElementChild;
-        console.log(newItem.value);
-        list.push({text : newItem.value , finished: false});
+        const inputFieldContent = document.getElementById('submit').parentNode.previousElementSibling.firstElementChild;
+        console.log(inputFieldContent.value);
+        list.push({text : inputFieldContent.value, finished: false});
         const node = document.getElementsByClassName('todolist-items')[0];
-        createListItem(node, newItem.value, false);
-        newItem.value = '';
+        createListItem(node, inputFieldContent.value, false);
+        inputFieldContent.value = '';
     }
 })
 
+// document.querySelectorAll('.list-item-check').forEach( item => item.addEventListener('click', () => {
+//     const checkedElementValue = item.parentNode.previousElementSibling.firstElementChild.value;
+//     console.log(checkedElementValue);
+//     const found = list.find( ele => ele.text === checkedElementValue);
+//     console.log(found);
+//     found.finished = !found.finished;
+//     console.log(found.finished);
+// }));
+
+// console.log(document.querySelectorAll('.list-item-check'));
+
+function addEventHandlersToListItems(item){
+    item.addEventListener('click', () => {
+        const checkedElementValue = item.parentNode.previousElementSibling.firstElementChild.value;
+        console.log(checkedElementValue);
+        const found = list.find( ele => ele.text === checkedElementValue);
+        // console.log(found);
+        found.finished = !found.finished;
+        console.log(found);
+    })
+}
