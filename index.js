@@ -1,5 +1,12 @@
 
 
+class Task{
+    constructor(text, finished){
+        this.text = text;
+        this.finished = finished;
+    }
+
+}
 const list = [
     {
     text: "Clean the kitchen",
@@ -32,6 +39,7 @@ function createListItem(node, text, finished){
 
     const input = document.createElement('input');
     input.type = 'text';
+    input.readOnly = true;
 
     input.classList.add('list-item-content');
     input.value = text;
@@ -61,7 +69,9 @@ document.getElementById('submit').addEventListener('click', () => {
     else{
         const inputFieldContent = document.getElementById('submit').parentNode.previousElementSibling.firstElementChild;
         console.log(inputFieldContent.value);
-        list.push({text : inputFieldContent.value, finished: false});
+        const newTask = new Task(inputFieldContent.value, false);
+        list.push(newTask);
+        // list.push({text : inputFieldContent.value, finished: false});
         const node = document.getElementsByClassName('todolist-items')[0];
         createListItem(node, inputFieldContent.value, false);
         inputFieldContent.value = '';
@@ -73,7 +83,7 @@ function addEventHandlersToListItems(item, checkedElementValue){
     item.addEventListener('click', () => {
         //const checkedElementValue = item.parentNode.previousElementSibling.firstElementChild.value;
         console.log(checkedElementValue);
-        const found = list.find( ele => ele.text === checkedElementValue);
+        const found = list.find( task => task.text === checkedElementValue);
         // console.log(found);
         found.finished = !found.finished;
         console.log(found);
