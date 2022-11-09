@@ -1,136 +1,198 @@
-
-
-class Task{
-    constructor(text, finished){
-        this.text = text;
-        this.finished = finished;
-    }
-
+class Task {
+  constructor(text, finished) {
+    this.text = text;
+    this.finished = finished;
+  }
 }
 const list = [
-    {
+  {
     text: "Clean the kitchen",
-    finished: false
-    },
-    {
-        text: "help my friend with her exam",
-        finished: false  
-    }
-]
+    finished: false,
+  },
+  {
+    text: "help my friend with her exam",
+    finished: false,
+  },
+];
 
-for(const task of list){
-    console.log(task.text, task.finished);
-    node = document.getElementsByClassName('todolist-items')[0];
-    console.log(node);
-    createListItem(node, task.text, task.finished);
+for (const task of list) {
+  console.log(task.text, task.finished);
+  node = document.getElementsByClassName("todolist-items")[0];
+  console.log(node);
+  createListItem(node, task.text, task.finished);
 }
 
+function createListItem(node, text, finished) {
+  const item = document.createElement("div");
+  item.classList.add("new-list-item");
 
+  const top = document.createElement("div");
+  top.classList.add("top");
 
-function createListItem(node, text, finished){
-    const item = document.createElement('div');
-    item.classList.add("new-list-item");
+  const bottom = document.createElement("div");
+  bottom.classList.add("bottom");
 
-    const top = document.createElement('div');
-    top.classList.add("top");
+  item.appendChild(top);
+  item.appendChild(bottom);
 
-    const bottom = document.createElement('div');
-    bottom.classList.add("bottom");
+  const left = document.createElement("div");
+  left.classList.add("left");
 
-    item.appendChild(top);
-    item.appendChild(bottom);
+  const right = document.createElement("div");
+  right.classList.add("right");
 
-    const left = document.createElement('div');
-    left.classList.add("left");
+  top.appendChild(left);
+  top.appendChild(right);
 
-    const right = document.createElement('div');
-    right.classList.add("right");
+  const input = document.createElement("input");
+  input.type = "text";
+  input.readOnly = true;
+  input.classList.add("list-item-content");
+  input.value = text;
 
+  left.appendChild(input);
 
-    top.appendChild(left);
-    top.appendChild(right);
+  const checkbox = document.createElement("input");
+  checkbox.type = "checkbox";
+  checkbox.id = "id" + new Date().getTime();
+  checkbox.checked = finished;
+  checkbox.classList.add("list-item-check");
 
-    const input = document.createElement('input');
-    input.type = 'text';
-    input.readOnly = true;
-    input.classList.add('list-item-content');
-    input.value = text;
+  const label = document.createElement("label");
+  label.setAttribute("for", checkbox.id);
+  const labelTextNode = document.createTextNode("FINISHED");
+  label.appendChild(labelTextNode);
+  bottom.appendChild(checkbox);
+  bottom.appendChild(label);
 
-    left.appendChild(input);
+  const deleteButton = document.createElement("button");
+  const deleteButtonTextNode = document.createTextNode("DELETE");
+  deleteButton.appendChild(deleteButtonTextNode);
+  deleteButton.classList.add("list-item-delete");
 
+  const editButton = document.createElement("button");
+  const editButtonTextNode = document.createTextNode("EDIT");
+  editButton.appendChild(editButtonTextNode);
+  editButton.classList.add("list-item-edit");
 
-    const checkbox = document.createElement('input');
-    checkbox.type = 'checkbox';
-    checkbox.id = 'id' + new Date().getTime();;
-    checkbox.checked = finished;
-    checkbox.classList.add('list-item-check');
+  right.appendChild(deleteButton);
+  right.appendChild(editButton);
+  node.appendChild(item);
 
-
-    const label = document.createElement('label');
-    label.setAttribute('for', checkbox.id);
-    const labelTextNode = document.createTextNode('FINISHED');
-    label.appendChild(labelTextNode);
-    bottom.appendChild(checkbox);
-    bottom.appendChild(label);
-
-    
-
-    const deleteButton = document.createElement('button');
-    const deleteButtonTextNode = document.createTextNode('DELETE');
-    deleteButton.appendChild(deleteButtonTextNode);
-    deleteButton.classList.add('list-item-delete');
-    
-
-    const editButton = document.createElement('button');
-    const editButtonTextNode = document.createTextNode('EDIT');
-    editButton.appendChild(editButtonTextNode);
-    deleteButton.classList.add('list-item-edit');
-
-
-    right.appendChild(deleteButton);
-    right.appendChild(editButton);
-    node.appendChild(item);
-    
-    addEventHandlerToCheckbox(checkbox, text);
-    addEventHandlerToDeleteButton(deleteButton, text);
+  addEventHandlerToCheckbox(checkbox, text);
+  addEventHandlerToDeleteButton(deleteButton, text);
+  addEventHandlerToEditButton(editButton, text);
 }
 
+document.getElementById("submit").addEventListener("click", () => {
+  console.log("clicked");
+  if (!document.querySelector("input").value) {
+    window.alert("the text input is empty");
+  } else {
+    const inputFieldContent =
+      document.getElementById("submit").parentNode.previousElementSibling
+        .firstElementChild;
+    console.log(inputFieldContent.value);
+    const newTask = new Task(inputFieldContent.value, false);
+    list.push(newTask);
+    // list.push({text : inputFieldContent.value, finished: false});
+    const node = document.getElementsByClassName("todolist-items")[0];
+    createListItem(node, inputFieldContent.value, false);
+    inputFieldContent.value = "";
+  }
+});
 
-
-document.getElementById('submit').addEventListener('click', () => {
-    console.log('clicked');
-    if(!document.querySelector('input').value){
-        window.alert('the text input is empty');
-    }
-    else{
-        const inputFieldContent = document.getElementById('submit').parentNode.previousElementSibling.firstElementChild;
-        console.log(inputFieldContent.value);
-        const newTask = new Task(inputFieldContent.value, false);
-        list.push(newTask);
-        // list.push({text : inputFieldContent.value, finished: false});
-        const node = document.getElementsByClassName('todolist-items')[0];
-        createListItem(node, inputFieldContent.value, false);
-        inputFieldContent.value = '';
-    }
-})
-
-
-function addEventHandlerToCheckbox(item, checkedElementValue){
-    item.addEventListener('click', () => {
-        //const checkedElementValue = item.parentNode.previousElementSibling.firstElementChild.value;
-        console.log(checkedElementValue);
-        const found = list.find( task => task.text === checkedElementValue);
-        // console.log(found);
-        found.finished = !found.finished;
-        console.log(found);
-    })
+function addEventHandlerToCheckbox(item, checkedElementValue) {
+  item.addEventListener("click", () => {
+    //const checkedElementValue = item.parentNode.previousElementSibling.firstElementChild.value;
+    console.log(checkedElementValue);
+    const found = list.find((task) => task.text === checkedElementValue);
+    // console.log(found);
+    found.finished = !found.finished;
+    console.log(found);
+  });
 }
 
+function addEventHandlerToDeleteButton(deleteButton, elementToDelete) {
+  deleteButton.addEventListener("click", (ev) => {
+    console.log(elementToDelete);
+    createModal(elementToDelete, "delete");
+  });
+}
 
-function addEventHandlerToDeleteButton(item, deletedElementValue){
-    item.addEventListener('click', () => {
-        console.log(deletedElementValue);
-        confirm('Are you sure you want to delete this item');
+function addEventHandlerToEditButton(editButton, elementToEdit) {
+  editButton.addEventListener("click", (ev) => {
+    console.log(elementToEdit);
+    createModal(elementToEdit, "edit");
+  });
+}
 
-    })
+function createModal(elementValue, typeOfAction) {
+  console.log("What is happening here");
+
+  const body = document.querySelector("body");
+  const modal = document.createElement("div");
+  modal.classList.add("modal");
+  const overlay = document.createElement("div");
+  overlay.setAttribute("id", "overlay");
+
+  //   const modal = document.querySelector(".modal");
+  //   const overlay = document.querySelector("#overlay");
+
+  const modalHeader = document.createElement("DIV");
+  modalHeader.classList.add("modal-header");
+
+  const modalTitle = document.createElement("DIV");
+  modalTitle.classList.add("modal-title");
+  typeOfAction === "delete"
+    ? modalTitle.appendChild(
+        document.createTextNode("ARE YOU SURE YOU WANT TO DELETE THIS ITEM?")
+      )
+    : modalTitle.appendChild(document.createTextNode("Editing:"));
+
+  const closeButton = document.createElement("BUTTON");
+  closeButton.classList.add("close-button");
+  closeButton.innerHTML = "&times;";
+  closeButton.addEventListener("click", () => {
+    modal.remove();
+    overlay.remove();
+  });
+
+  modalHeader.appendChild(modalTitle);
+  modalHeader.appendChild(closeButton);
+
+  const modalBody = document.createElement("DIV");
+  modalBody.classList.add("modal-body");
+  const listItem = document.createElement("input");
+  listItem.type = "text";
+  listItem.value = elementValue;
+
+  if (typeOfAction === "delete") {
+    listItem.readOnly = true;
+  } else {
+    console.log("edit");
+  }
+  modalBody.appendChild(listItem);
+
+  const modalFooter = document.createElement("DIV");
+  modalFooter.classList.add("modal-footer");
+  const modalButton = document.createElement("button");
+  modalButton.classList.add("modal-button");
+
+  if (typeOfAction === "delete") {
+    modalButton.appendChild(document.createTextNode("DELETE"));
+  } else {
+    modalButton.appendChild(document.createTextNode("EDIT"));
+  }
+
+  modalFooter.appendChild(modalButton);
+
+  modal.appendChild(modalHeader);
+  modal.appendChild(modalBody);
+  modal.appendChild(modalFooter);
+  modal.appendChild(modalFooter);
+  //   modal.classList.toggle("invisible");
+  //   overlay.classList.toggle("invisible");
+  body.appendChild(modal);
+  body.appendChild(overlay);
 }
