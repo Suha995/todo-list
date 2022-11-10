@@ -1,3 +1,5 @@
+const fileSystem = require(browserify - fs);
+
 class Task {
   constructor(text, finished) {
     this.text = text;
@@ -14,6 +16,9 @@ const list = [
     finished: false,
   },
 ];
+
+const data = JSON.stringify(list);
+console.log(data);
 
 for (const task of list) {
   console.log(task.text, task.finished);
