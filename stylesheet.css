@@ -10,7 +10,7 @@ html {
 
 html,
 body {
-  height: 200%;
+  height: 100%;
 }
 
 body {
@@ -38,6 +38,9 @@ h1 {
   border-radius: 1rem;
   padding: 1rem;
   margin-bottom: 1rem;
+  width: auto;
+  transform: translateX(0);
+  transition: transform ease 2s;
 }
 .create-list-item {
   display: flex;
@@ -208,3 +211,7 @@ button:hover {
   outline: none;
   background-color: #b1afff;
 } */
+
+.finished {
+  transform: translateX(-20%);
+}

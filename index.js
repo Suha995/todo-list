@@ -1,5 +1,3 @@
-const fileSystem = require(browserify - fs);
-
 class Task {
   constructor(text, finished) {
     this.text = text;
@@ -85,6 +83,7 @@ function createListItem(node, text, finished) {
   node.appendChild(item);
 
   addEventHandlerToCheckbox(checkbox, text);
+  // addEventHandlerToCheckbox(item);
   addEventHandlerToDeleteButton(deleteButton, text);
   addEventHandlerToEditButton(editButton, text);
 }
@@ -107,14 +106,18 @@ document.getElementById("submit").addEventListener("click", () => {
   }
 });
 
-function addEventHandlerToCheckbox(item, checkedElementValue) {
-  item.addEventListener("click", () => {
-    //const checkedElementValue = item.parentNode.previousElementSibling.firstElementChild.value;
+function addEventHandlerToCheckbox(checkItem, checkedElementValue) {
+  checkItem.addEventListener("click", () => {
     console.log(checkedElementValue);
     const found = list.find((task) => task.text === checkedElementValue);
-    // console.log(found);
     found.finished = !found.finished;
-    console.log(found);
+    const deleteAndEditSection =
+      checkItem.parentNode.previousElementSibling.lastElementChild;
+    console.log(deleteAndEditSection);
+    deleteAndEditSection.classList.toggle("invisible");
+    const newListItem = checkItem.parentNode.parentNode;
+    console.log(newListItem);
+    newListItem.classList.toggle("finished");
   });
 }
 
