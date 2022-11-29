@@ -63,18 +63,18 @@ function createListItem(node, text, finished) {
 
   const label = document.createElement("label");
   label.setAttribute("for", checkbox.id);
-  const labelTextNode = document.createTextNode("FINISHED");
+  const labelTextNode = document.createTextNode("Finished");
   label.appendChild(labelTextNode);
   bottom.appendChild(checkbox);
   bottom.appendChild(label);
 
   const deleteButton = document.createElement("button");
-  const deleteButtonTextNode = document.createTextNode("DELETE");
+  const deleteButtonTextNode = document.createTextNode("Delete");
   deleteButton.appendChild(deleteButtonTextNode);
   deleteButton.classList.add("list-item-delete");
 
   const editButton = document.createElement("button");
-  const editButtonTextNode = document.createTextNode("EDIT");
+  const editButtonTextNode = document.createTextNode("Edit");
   editButton.appendChild(editButtonTextNode);
   editButton.classList.add("list-item-edit");
 
@@ -118,6 +118,11 @@ function addEventHandlerToCheckbox(checkItem, checkedElementValue) {
     const newListItem = checkItem.parentNode.parentNode;
     console.log(newListItem);
     newListItem.classList.toggle("finished");
+    const newListItemContent =
+      checkItem.parentNode.previousElementSibling.firstElementChild
+        .firstElementChild;
+    newListItemContent.classList.toggle("list-item-content-finished");
+    console.log(newListItemContent);
   });
 }
 
@@ -136,8 +141,6 @@ function addEventHandlerToEditButton(editButton, elementToEdit) {
 }
 
 function createModal(elementValue, typeOfAction) {
-  console.log("What is happening here");
-
   const body = document.querySelector("body");
   const modal = document.createElement("div");
   modal.classList.add("modal");
@@ -154,9 +157,11 @@ function createModal(elementValue, typeOfAction) {
   modalTitle.classList.add("modal-title");
   typeOfAction === "delete"
     ? modalTitle.appendChild(
-        document.createTextNode("ARE YOU SURE YOU WANT TO DELETE THIS ITEM?")
+        document.createTextNode("Are you sure you want to delete this item?")
       )
-    : modalTitle.appendChild(document.createTextNode("Editing:"));
+    : modalTitle.appendChild(
+        document.createTextNode("Modifying the todo list item!")
+      );
 
   const closeButton = document.createElement("BUTTON");
   closeButton.classList.add("close-button");
@@ -188,7 +193,7 @@ function createModal(elementValue, typeOfAction) {
   modalButton.classList.add("modal-button");
 
   if (typeOfAction === "delete") {
-    modalButton.appendChild(document.createTextNode("DELETE"));
+    modalButton.appendChild(document.createTextNode("Yes, delete"));
   } else {
     modalButton.appendChild(document.createTextNode("EDIT"));
   }
