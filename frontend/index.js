@@ -78,13 +78,12 @@ function createListItem(node, text, finished) {
   editButton.classList.add("list-item-edit");
 
   right.appendChild(deleteButton);
-  right.appendChild(editButton);
+  // right.appendChild(editButton); //remove the edit functionality temporarilay
   node.appendChild(item);
 
   addEventHandlerToCheckbox(checkbox, text);
-  // addEventHandlerToCheckbox(item);
-  addEventHandlerToDeleteButton(deleteButton, text);
-  addEventHandlerToEditButton(editButton, text);
+  addEventHandlerToDeleteButton(deleteButton, text, item);
+  addEventHandlerToEditButton(editButton, text, item);
 }
 
 document.getElementById("submit").addEventListener("click", () => {
@@ -125,21 +124,21 @@ function addEventHandlerToCheckbox(checkItem, checkedElementValue) {
   });
 }
 
-function addEventHandlerToDeleteButton(deleteButton, elementToDelete) {
+function addEventHandlerToDeleteButton(deleteButton, elementToDelete, item) {
   deleteButton.addEventListener("click", (ev) => {
     console.log(elementToDelete);
-    createModal(elementToDelete, "delete");
+    createModal(elementToDelete, "delete", item);
   });
 }
 
-function addEventHandlerToEditButton(editButton, elementToEdit) {
+function addEventHandlerToEditButton(editButton, elementToEdit, item) {
   editButton.addEventListener("click", (ev) => {
     console.log(elementToEdit);
-    createModal(elementToEdit, "edit");
+    createModal(elementToEdit, "edit", item);
   });
 }
 
-function createModal(elementValue, typeOfAction) {
+function createModal(elementValue, typeOfAction, item) {
   const body = document.querySelector("body");
   const modal = document.createElement("div");
   modal.classList.add("modal");
@@ -198,7 +197,7 @@ function createModal(elementValue, typeOfAction) {
   if (typeOfAction === "delete") {
     modalButton.appendChild(document.createTextNode("Yes, delete"));
     console.log("hellllo");
-    modalButton.addEventListener("submit", (e) => {
+    modalButton.addEventListener("click", (e) => {
       e.preventDefault();
       console.log("whyyyy");
       let indexOfDeletedElement;
@@ -209,9 +208,30 @@ function createModal(elementValue, typeOfAction) {
       }
       list.splice(indexOfDeletedElement, 1);
       console.log(list);
+      modal.remove();
+      overlay.remove();
+      item.remove();
     });
   } else {
     modalButton.appendChild(document.createTextNode("EDIT"));
+    modalButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      console.log("whyyyy");
+      let indexOfEditedElement;
+      let newValueOfEditedElement = listItem.value;
+      for (const ele of list) {
+        if (ele.text === elementValue) {
+          indexOfEditedElement = list.indexOf(ele);
+        }
+      }
+      list.splice(indexOfEditedElement, 1, newValueOfEditedElement);
+      console.log(list);
+      let x = item.firstElementChild.firstElementChild.firstElementChild;
+      x.value = newValueOfEditedElement;
+      console.log(x);
+      modal.remove();
+      overlay.remove();
+    });
   }
 
   modalFooter.appendChild(form);
