@@ -1,3 +1,5 @@
+// import createListItem from "./modules/createListItem.js";
+
 class Task {
   constructor(text, finished) {
     this.text = text;
@@ -15,12 +17,9 @@ const list = [
   },
 ];
 
-const data = JSON.stringify(list);
-console.log(data);
-
 for (const task of list) {
   console.log(task.text, task.finished);
-  node = document.getElementsByClassName("todolist-items")[0];
+  const node = document.getElementsByClassName("todolist-items")[0];
   console.log(node);
   createListItem(node, task.text, task.finished);
 }
@@ -189,16 +188,33 @@ function createModal(elementValue, typeOfAction) {
 
   const modalFooter = document.createElement("DIV");
   modalFooter.classList.add("modal-footer");
+  const form = document.createElement("form");
+  // form.setAttribute("action", "/");
   const modalButton = document.createElement("button");
   modalButton.classList.add("modal-button");
+  modalButton.setAttribute("type", "submit");
+  form.appendChild(modalButton);
 
   if (typeOfAction === "delete") {
     modalButton.appendChild(document.createTextNode("Yes, delete"));
+    console.log("hellllo");
+    modalButton.addEventListener("submit", (e) => {
+      e.preventDefault();
+      console.log("whyyyy");
+      let indexOfDeletedElement;
+      for (const ele of list) {
+        if (ele.text === elementValue) {
+          indexOfDeletedElement = list.indexOf(ele);
+        }
+      }
+      list.splice(indexOfDeletedElement, 1);
+      console.log(list);
+    });
   } else {
     modalButton.appendChild(document.createTextNode("EDIT"));
   }
 
-  modalFooter.appendChild(modalButton);
+  modalFooter.appendChild(form);
 
   modal.appendChild(modalHeader);
   modal.appendChild(modalBody);
