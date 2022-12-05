@@ -1,4 +1,4 @@
-function createModal(elementValue, typeOfAction, item) {
+function createModal(elementValue, typeOfAction, item, list) {
   const body = document.querySelector("body");
   const modal = document.createElement("div");
   modal.classList.add("modal");
@@ -73,7 +73,25 @@ function createModal(elementValue, typeOfAction, item) {
       item.remove();
     });
   } else {
-    modalButton.appendChild(document.createTextNode("Yes, edit"));
+    modalButton.appendChild(document.createTextNode("EDIT"));
+    modalButton.addEventListener("click", (e) => {
+      e.preventDefault();
+      console.log("whyyyy");
+      let indexOfEditedElement;
+      let newValueOfEditedElement = listItem.value;
+      for (const ele of list) {
+        if (ele.text === elementValue) {
+          indexOfEditedElement = list.indexOf(ele);
+        }
+      }
+      list.splice(indexOfEditedElement, 1, newValueOfEditedElement);
+      console.log(list);
+      let x = item.firstElementChild.firstElementChild.firstElementChild;
+      x.value = newValueOfEditedElement;
+      console.log(x);
+      modal.remove();
+      overlay.remove();
+    });
   }
 
   modalFooter.appendChild(form);
